@@ -13,7 +13,6 @@
             --card-bg: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
             --accent-blue: #00d2ff;
-            --accent-orange: #ff9f43;
             --danger: #ff4d4d;
             --success: #2ecc71;
         }
@@ -26,14 +25,44 @@
             color: #e2e8f0; 
             padding: 16px;
             min-height: 100vh;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .container { max-width: 600px; margin: 0 auto; }
 
-        header { text-align: left; margin: 20px 0 30px 5px; }
+        header { text-align: left; margin: 20px 0 25px 5px; }
         header h1 { font-size: 1.4rem; color: #fff; font-weight: 800; }
-        header p { font-size: 0.85rem; color: #8892b0; margin-top: 5px; }
+        
+        /* Digital Clock Style */
+        .clock-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 1px solid var(--border);
+        }
+        #realtime-clock {
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        .status-open { background: rgba(46, 204, 113, 0.15); color: var(--success); border: 1px solid var(--success); }
+        .status-closed { background: rgba(255, 77, 77, 0.15); color: var(--danger); border: 1px solid var(--danger); }
+        .status-soon { background: rgba(255, 204, 0, 0.15); color: var(--gold); border: 1px solid var(--gold); }
 
         /* Statistik Grid */
         .stats-grid {
@@ -63,20 +92,8 @@
         .border-green { border-left: 4px solid var(--success); }
         .border-white { border-left: 4px solid #fff; }
 
-        /* Search Bar */
-        .search-wrapper { margin-bottom: 25px; position: relative; }
-        .search-input {
-            width: 100%; padding: 16px 20px 16px 50px;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            border-radius: 18px; color: white; outline: none; transition: 0.3s;
-            font-size: 0.95rem;
-        }
-        .search-wrapper i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--gold); }
-        .search-input:focus { border-color: var(--gold); background: rgba(255,255,255,0.08); }
-
         /* List Data Style */
         .list-container { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
-        
         .user-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -84,25 +101,19 @@
             padding: 16px;
             animation: fadeIn 0.5s ease;
         }
-
         .user-card.duplicate { border: 1px solid rgba(255, 77, 77, 0.4); background: rgba(255, 77, 77, 0.05); }
 
         .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
         .user-info h4 { font-size: 1rem; font-weight: 700; color: #fff; }
         .user-info small { font-size: 0.75rem; color: #8892b0; }
 
-        .card-body { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
-        
         .badge {
             padding: 6px 10px; border-radius: 10px; font-size: 0.65rem; font-weight: 700;
-            display: flex; align-items: center; gap: 5px;
         }
         .badge-ppi { background: rgba(0, 210, 255, 0.1); color: var(--accent-blue); }
-        .badge-capa { background: rgba(255, 159, 67, 0.1); color: var(--accent-orange); }
         .badge-menu { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--border); }
 
         .card-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-        
         .action-btn {
             height: 45px; display: flex; align-items: center; justify-content: center;
             border-radius: 12px; border: none; font-size: 1.1rem;
@@ -110,8 +121,6 @@
         .btn-view { background: var(--gold); color: #000; }
         .btn-wa { background: var(--success); color: #fff; }
         .btn-del { background: rgba(255, 77, 77, 0.1); color: var(--danger); border: 1px solid rgba(255, 77, 77, 0.2); }
-        
-        .duplicate-tag { color: var(--danger); font-size: 0.6rem; font-weight: 800; background: rgba(255,77,77,0.1); padding: 2px 6px; border-radius: 4px; }
 
         #modal {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
@@ -127,25 +136,18 @@
 <div class="container">
     <header>
         <h1>Panel Admin Bukber</h1>
-        <p id="current-date">Paskab & PPI Dashboard</p>
+        <div class="clock-wrapper">
+            <div id="realtime-clock">Memuat waktu...</div>
+        </div>
     </header>
+
+    <div id="reg-status" class="status-badge">Memproses Status...</div>
 
     <div class="stats-grid">
         <div class="stat-card full-width border-blue">
             <i class="fas fa-users"></i>
             <span>Total Seluruh Peserta</span>
             <h2 id="t-semua">0</h2>
-        </div>
-
-        <div class="stat-card border-gold">
-            <i class="fas fa-user-shield"></i>
-            <span>PPI</span>
-            <h2 id="t-ppi">0</h2>
-        </div>
-        <div class="stat-card border-gold">
-            <i class="fas fa-user-graduate"></i>
-            <span>CAPASKAB</span>
-            <h2 id="t-capa">0</h2>
         </div>
 
         <div class="stat-card border-white">
@@ -161,21 +163,16 @@
 
         <div class="stat-card full-width border-green">
             <i class="fas fa-wallet"></i>
-            <span>Total Dana (Rp 30.000 x Jumlah)</span>
+            <span>Total Dana Terkumpul</span>
             <h2 id="t-uang" style="color: var(--success);">Rp 0</h2>
         </div>
     </div>
 
-    <div class="search-wrapper">
-        <i class="fas fa-search"></i>
-        <input type="text" id="inputCari" class="search-input" placeholder="Cari nama atau angkatan..." onkeyup="cariNama(this)">
-    </div>
-
-    <div id="isi-tabel" class="list-container"></div>
+    <div class="list-container" id="isi-tabel"></div>
 </div>
 
 <div id="modal">
-    <span style="position:absolute; top:30px; right:30px; font-size:2rem; color:#fff;" onclick="closeImg()">&times;</span>
+    <span style="position:absolute; top:30px; right:30px; font-size:2rem; color:#fff; cursor:pointer;" onclick="closeImg()">&times;</span>
     <img id="img-target" src="">
 </div>
 
@@ -197,10 +194,34 @@
     const db = getDatabase(app);
     const dataRef = ref(db, 'pendaftaran');
 
-    let allData = []; 
+    // --- FUNGSI CLOCK & STATUS ---
+    function updateClock() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        document.getElementById('realtime-clock').innerText = now.toLocaleDateString('id-ID', options);
 
+        // Logika Status Pendaftaran
+        const statusEl = document.getElementById('reg-status');
+        const start = new Date('2026-02-09T17:00:00'); // 9 Feb jam 17:00
+        const end = new Date('2026-02-25T23:59:59');   // 25 Feb jam 23:59
+
+        if (now < start) {
+            statusEl.className = "status-badge status-soon";
+            statusEl.innerHTML = '<i class="fas fa-hourglass-start"></i> Segera Dibuka (9 Feb 17:00)';
+        } else if (now >= start && now <= end) {
+            statusEl.className = "status-badge status-open";
+            statusEl.innerHTML = '<i class="fas fa-door-open"></i> Pendaftaran Dibuka';
+        } else {
+            statusEl.className = "status-badge status-closed";
+            statusEl.innerHTML = '<i class="fas fa-door-closed"></i> Pendaftaran Ditutup';
+        }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // --- FIREBASE LOGIC ---
     onValue(dataRef, (snapshot) => {
-        allData = [];
+        let allData = [];
         if (snapshot.exists()) {
             snapshot.forEach((child) => {
                 allData.push({ key: child.key, ...child.val() });
@@ -214,70 +235,42 @@
     function renderCards(data) {
         const container = document.getElementById('isi-tabel');
         container.innerHTML = "";
-        const namaCounts = {};
-        data.forEach(item => {
-            const n = item.nama.toLowerCase().trim();
-            namaCounts[n] = (namaCounts[n] || 0) + 1;
-        });
+        data.forEach((d) => {
+            const waktu = d.timestamp ? new Date(d.timestamp).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : '--:--';
+            let rawWA = d.whatsapp ? d.whatsapp.toString().replace(/\D/g, '') : '';
+            let formattedWA = rawWA.startsWith('0') ? '62' + rawWA.substring(1) : rawWA;
 
-        if (data.length > 0) {
-            data.forEach((d) => {
-                const isDuplicate = namaCounts[d.nama.toLowerCase().trim()] > 1;
-                const waktuAsli = d.timestamp ? new Date(d.timestamp) : new Date();
-                const tgl = waktuAsli.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-                const jam = waktuAsli.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-                let rawWA = d.whatsapp ? d.whatsapp.toString().replace(/\D/g, '') : '';
-                let formattedWA = rawWA.startsWith('0') ? '62' + rawWA.substring(1) : rawWA;
-                const linkWA = `https://wa.me/${formattedWA}?text=Halo ${d.nama}, pembayaran bukber sudah kami terima ya!`;
-
-                const card = `
-                    <div class="user-card ${isDuplicate ? 'duplicate' : ''}">
-                        <div class="card-header">
-                            <div class="user-info">
-                                <h4>${d.nama} ${isDuplicate ? '<span class="duplicate-tag">DUPLIKAT</span>' : ''}</h4>
-                                <small><i class="far fa-clock"></i> ${tgl} • ${jam}</small>
-                            </div>
-                            <div style="text-align:right"><small>Angkatan</small><p style="font-weight:800; color:var(--gold)">${d.angkatan}</p></div>
+            container.innerHTML += `
+                <div class="user-card">
+                    <div class="card-header">
+                        <div class="user-info">
+                            <h4>${d.nama}</h4>
+                            <small>${waktu} • Angkatan ${d.angkatan}</small>
                         </div>
-                        <div class="card-body">
-                            <span class="badge ${d.kategori === 'PPI' ? 'badge-ppi' : 'badge-capa'}">${d.kategori}</span>
-                            <span class="badge badge-menu"><i class="fas fa-utensils"></i> ${d.menu}</span>
-                        </div>
-                        <div class="card-actions">
-                            <button class="action-btn btn-view" onclick="showImg('${d.bukti}')"><i class="fa fa-image"></i></button>
-                            <a href="${linkWA}" target="_blank" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i></a>
-                            <button class="action-btn btn-del" onclick="hapusVerifikasi('${d.key}', '${d.nama}')"><i class="fa fa-trash"></i></button>
-                        </div>
+                        <span class="badge badge-ppi">PPI</span>
                     </div>
-                `;
-                container.innerHTML += card;
-            });
-        }
+                    <div style="margin-bottom:15px"><span class="badge badge-menu">${d.menu}</span></div>
+                    <div class="card-actions">
+                        <button class="action-btn btn-view" onclick="showImg('${d.bukti}')"><i class="fa fa-image"></i></button>
+                        <a href="https://wa.me/${formattedWA}" target="_blank" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i></a>
+                        <button class="action-btn btn-del" onclick="hapusData('${d.key}')"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+        });
     }
 
     function updateStats(data) {
-        let ppi = 0, capa = 0, ayam = 0, telur = 0;
-        data.forEach(d => { 
-            if(d.kategori === "PPI") ppi++; else capa++;
-            if(d.menu === "Ayam") ayam++; else telur++;
-        });
+        let ayam = data.filter(d => d.menu === "Ayam").length;
+        let telur = data.filter(d => d.menu === "Telur").length;
         document.getElementById('t-semua').innerText = data.length;
-        document.getElementById('t-ppi').innerText = ppi;
-        document.getElementById('t-capa').innerText = capa;
         document.getElementById('t-ayam').innerText = ayam;
         document.getElementById('t-telur').innerText = telur;
         document.getElementById('t-uang').innerText = "Rp " + (data.length * 30000).toLocaleString('id-ID');
     }
 
-    window.cariNama = function(input) {
-        const keyword = input.value.toLowerCase();
-        renderCards(allData.filter(item => item.nama.toLowerCase().includes(keyword) || item.angkatan.toString().includes(keyword)));
-    };
-
-    window.hapusVerifikasi = function(key, nama) {
-        if (confirm(`Hapus ${nama}?`)) {
-            if (prompt(`Ketik "DELETE":`) === "DELETE") remove(ref(db, 'pendaftaran/' + key));
-        }
+    window.hapusData = (key) => {
+        if (confirm("Hapus data ini?")) remove(ref(db, 'pendaftaran/' + key));
     };
 
     window.showImg = (src) => {
@@ -285,7 +278,6 @@
         document.getElementById('modal').style.display = 'flex';
     };
     window.closeImg = () => { document.getElementById('modal').style.display = 'none'; };
-    document.getElementById('current-date').innerText = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 </script>
 </body>
 </html>
