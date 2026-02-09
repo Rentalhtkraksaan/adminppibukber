@@ -16,9 +16,7 @@
             --danger: #ff4d4d;
             --success: #2ecc71;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        
         body { 
             background: var(--dark-bg);
             background-image: radial-gradient(circle at 50% -20%, #1a2a44 0%, #06090f 100%);
@@ -26,13 +24,10 @@
             padding: 16px;
             min-height: 100vh;
         }
-
         .container { max-width: 600px; margin: 0 auto; }
-
         header { text-align: left; margin: 20px 0 25px 5px; }
         header h1 { font-size: 1.4rem; color: #fff; font-weight: 800; }
         
-        /* Digital Clock Style */
         .clock-wrapper {
             background: rgba(255, 255, 255, 0.05);
             display: inline-block;
@@ -48,7 +43,25 @@
             font-size: 0.9rem;
         }
 
-        /* Status Badge */
+        /* Search Bar */
+        .search-container {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 45px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-input:focus { border-color: var(--gold); background: rgba(255,255,255,0.06); }
+        .search-icon { position: absolute; left: 18px; top: 18px; color: #8892b0; }
+
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -64,14 +77,12 @@
         .status-closed { background: rgba(255, 77, 77, 0.15); color: var(--danger); border: 1px solid var(--danger); }
         .status-soon { background: rgba(255, 204, 0, 0.15); color: var(--gold); border: 1px solid var(--gold); }
 
-        /* Statistik Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             margin-bottom: 25px;
         }
-        
         .stat-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -81,18 +92,15 @@
             overflow: hidden;
             backdrop-filter: blur(10px);
         }
-
         .stat-card i { position: absolute; right: -5px; bottom: -5px; font-size: 2.5rem; opacity: 0.05; color: white; }
         .stat-card span { display: block; font-size: 0.65rem; color: #8892b0; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px; }
         .stat-card h2 { font-size: 1.3rem; font-weight: 800; }
 
         .full-width { grid-column: span 2; }
-        .border-gold { border-left: 4px solid var(--gold); }
         .border-blue { border-left: 4px solid var(--accent-blue); }
         .border-green { border-left: 4px solid var(--success); }
         .border-white { border-left: 4px solid #fff; }
 
-        /* List Data Style */
         .list-container { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
         .user-card {
             background: var(--card-bg);
@@ -101,25 +109,21 @@
             padding: 16px;
             animation: fadeIn 0.5s ease;
         }
-        .user-card.duplicate { border: 1px solid rgba(255, 77, 77, 0.4); background: rgba(255, 77, 77, 0.05); }
-
         .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
         .user-info h4 { font-size: 1rem; font-weight: 700; color: #fff; }
         .user-info small { font-size: 0.75rem; color: #8892b0; }
 
-        .badge {
-            padding: 6px 10px; border-radius: 10px; font-size: 0.65rem; font-weight: 700;
-        }
+        .badge { padding: 6px 10px; border-radius: 10px; font-size: 0.65rem; font-weight: 700; }
         .badge-ppi { background: rgba(0, 210, 255, 0.1); color: var(--accent-blue); }
         .badge-menu { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--border); }
 
         .card-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
         .action-btn {
             height: 45px; display: flex; align-items: center; justify-content: center;
-            border-radius: 12px; border: none; font-size: 1.1rem;
+            border-radius: 12px; border: none; font-size: 1.1rem; cursor: pointer;
         }
         .btn-view { background: var(--gold); color: #000; }
-        .btn-wa { background: var(--success); color: #fff; }
+        .btn-wa { background: var(--success); color: #fff; text-decoration: none; }
         .btn-del { background: rgba(255, 77, 77, 0.1); color: var(--danger); border: 1px solid rgba(255, 77, 77, 0.2); }
 
         #modal {
@@ -149,7 +153,6 @@
             <span>Total Seluruh Peserta</span>
             <h2 id="t-semua">0</h2>
         </div>
-
         <div class="stat-card border-white">
             <i class="fas fa-drumstick-bite"></i>
             <span>MENU AYAM</span>
@@ -160,12 +163,16 @@
             <span>MENU TELUR</span>
             <h2 id="t-telur">0</h2>
         </div>
-
         <div class="stat-card full-width border-green">
             <i class="fas fa-wallet"></i>
             <span>Total Dana Terkumpul</span>
             <h2 id="t-uang" style="color: var(--success);">Rp 0</h2>
         </div>
+    </div>
+
+    <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchBar" class="search-input" placeholder="Cari nama atau angkatan...">
     </div>
 
     <div class="list-container" id="isi-tabel"></div>
@@ -178,7 +185,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCtQh5SpZCk2TDUk9iMOjQX5uc6gRIJyp8",
@@ -194,20 +201,20 @@
     const db = getDatabase(app);
     const dataRef = ref(db, 'pendaftaran');
 
-    // --- FUNGSI CLOCK & STATUS ---
+    let localData = []; 
+
     function updateClock() {
         const now = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
         document.getElementById('realtime-clock').innerText = now.toLocaleDateString('id-ID', options);
 
-        // Logika Status Pendaftaran
         const statusEl = document.getElementById('reg-status');
-        const start = new Date('2026-02-09T17:00:00'); // 9 Feb jam 17:00
-        const end = new Date('2026-02-25T23:59:59');   // 25 Feb jam 23:59
+        const start = new Date('2026-02-09T17:00:00');
+        const end = new Date('2026-02-25T23:59:59');
 
         if (now < start) {
             statusEl.className = "status-badge status-soon";
-            statusEl.innerHTML = '<i class="fas fa-hourglass-start"></i> Segera Dibuka (9 Feb 17:00)';
+            statusEl.innerHTML = '<i class="fas fa-hourglass-start"></i> Segera Dibuka';
         } else if (now >= start && now <= end) {
             statusEl.className = "status-badge status-open";
             statusEl.innerHTML = '<i class="fas fa-door-open"></i> Pendaftaran Dibuka';
@@ -219,22 +226,27 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // --- FIREBASE LOGIC ---
     onValue(dataRef, (snapshot) => {
-        let allData = [];
+        localData = [];
         if (snapshot.exists()) {
             snapshot.forEach((child) => {
-                allData.push({ key: child.key, ...child.val() });
+                localData.push({ key: child.key, ...child.val() });
             });
-            allData.reverse();
+            localData.reverse();
         }
-        renderCards(allData);
-        updateStats(allData);
+        renderCards(localData);
+        updateStats(localData);
     });
 
     function renderCards(data) {
         const container = document.getElementById('isi-tabel');
         container.innerHTML = "";
+        
+        if(data.length === 0) {
+            container.innerHTML = `<div style="text-align:center; opacity:0.3; margin-top:40px;">Data tidak ditemukan</div>`;
+            return;
+        }
+
         data.forEach((d) => {
             const waktu = d.timestamp ? new Date(d.timestamp).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : '--:--';
             let rawWA = d.whatsapp ? d.whatsapp.toString().replace(/\D/g, '') : '';
@@ -253,12 +265,21 @@
                     <div class="card-actions">
                         <button class="action-btn btn-view" onclick="showImg('${d.bukti}')"><i class="fa fa-image"></i></button>
                         <a href="https://wa.me/${formattedWA}" target="_blank" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i></a>
-                        <button class="action-btn btn-del" onclick="hapusData('${d.key}')"><i class="fa fa-trash"></i></button>
+                        <button class="action-btn btn-del" onclick="hapusData('${d.key}', '${d.nama}')"><i class="fa fa-trash"></i></button>
                     </div>
                 </div>
             `;
         });
     }
+
+    document.getElementById('searchBar').addEventListener('input', (e) => {
+        const keyword = e.target.value.toLowerCase();
+        const filtered = localData.filter(item => 
+            item.nama.toLowerCase().includes(keyword) || 
+            item.angkatan.toString().includes(keyword)
+        );
+        renderCards(filtered);
+    });
 
     function updateStats(data) {
         let ayam = data.filter(d => d.menu === "Ayam").length;
@@ -269,8 +290,34 @@
         document.getElementById('t-uang').innerText = "Rp " + (data.length * 30000).toLocaleString('id-ID');
     }
 
-    window.hapusData = (key) => {
-        if (confirm("Hapus data ini?")) remove(ref(db, 'pendaftaran/' + key));
+    // --- HAPUS DENGAN KETIK "DELETE" & AUTO BACKUP ---
+    window.hapusData = (key, nama) => {
+        const dataLengkap = localData.find(item => item.key === key);
+
+        // Konfirmasi 1
+        if (confirm(`Hapus data "${nama}"?`)) {
+            // Konfirmasi 2: Ketik DELETE
+            const konfirmasiKetik = prompt(`Ketik "DELETE" untuk menghapus data ${nama}:`);
+            
+            if (konfirmasiKetik === "DELETE") {
+                // Proses Backup dulu
+                const backupRef = ref(db, 'backup_pendaftaran/' + key);
+                set(backupRef, {
+                    ...dataLengkap,
+                    deletedAt: new Date().toISOString()
+                })
+                .then(() => {
+                    // Berhasil backup, lalu hapus yang asli
+                    return remove(ref(db, 'pendaftaran/' + key));
+                })
+                .then(() => {
+                    alert("Data berhasil dihapus dan dipindahkan ke arsip.");
+                })
+                .catch((err) => alert("Gagal: " + err.message));
+            } else {
+                alert("Penghapusan dibatalkan. Kata konfirmasi tidak sesuai.");
+            }
+        }
     };
 
     window.showImg = (src) => {
