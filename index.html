@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Bukber PPI 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --gold: #ffcc00;
+            --dark-bg: #06090f;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent-blue: #00d2ff;
+            --accent-orange: #ff9f43;
+            --danger: #ff4d4d;
+            --success: #2ecc71;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { 
+            background: var(--dark-bg);
+            background-image: radial-gradient(circle at 50% -20%, #1a2a44 0%, #06090f 100%);
+            color: #e2e8f0; 
+            padding: 16px;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; }
+
+        header { text-align: left; margin: 20px 0 30px 5px; }
+        header h1 { font-size: 1.4rem; color: #fff; font-weight: 800; }
+        header p { font-size: 0.85rem; color: #8892b0; margin-top: 5px; }
+
+        /* Statistik Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card i { position: absolute; right: -5px; bottom: -5px; font-size: 2.5rem; opacity: 0.05; color: white; }
+        .stat-card span { display: block; font-size: 0.65rem; color: #8892b0; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px; }
+        .stat-card h2 { font-size: 1.3rem; font-weight: 800; }
+
+        .full-width { grid-column: span 2; }
+        .border-gold { border-left: 4px solid var(--gold); }
+        .border-blue { border-left: 4px solid var(--accent-blue); }
+        .border-green { border-left: 4px solid var(--success); }
+        .border-white { border-left: 4px solid #fff; }
+
+        /* Search Bar */
+        .search-wrapper { margin-bottom: 25px; position: relative; }
+        .search-input {
+            width: 100%; padding: 16px 20px 16px 50px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            border-radius: 18px; color: white; outline: none; transition: 0.3s;
+            font-size: 0.95rem;
+        }
+        .search-wrapper i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--gold); }
+        .search-input:focus { border-color: var(--gold); background: rgba(255,255,255,0.08); }
+
+        /* List Data Style */
+        .list-container { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
+        
+        .user-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 16px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .user-card.duplicate { border: 1px solid rgba(255, 77, 77, 0.4); background: rgba(255, 77, 77, 0.05); }
+
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .user-info h4 { font-size: 1rem; font-weight: 700; color: #fff; }
+        .user-info small { font-size: 0.75rem; color: #8892b0; }
+
+        .card-body { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+        
+        .badge {
+            padding: 6px 10px; border-radius: 10px; font-size: 0.65rem; font-weight: 700;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .badge-ppi { background: rgba(0, 210, 255, 0.1); color: var(--accent-blue); }
+        .badge-capa { background: rgba(255, 159, 67, 0.1); color: var(--accent-orange); }
+        .badge-menu { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--border); }
+
+        .card-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        
+        .action-btn {
+            height: 45px; display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; border: none; font-size: 1.1rem;
+        }
+        .btn-view { background: var(--gold); color: #000; }
+        .btn-wa { background: var(--success); color: #fff; }
+        .btn-del { background: rgba(255, 77, 77, 0.1); color: var(--danger); border: 1px solid rgba(255, 77, 77, 0.2); }
+        
+        .duplicate-tag { color: var(--danger); font-size: 0.6rem; font-weight: 800; background: rgba(255,77,77,0.1); padding: 2px 6px; border-radius: 4px; }
+
+        #modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            z-index: 1000; justify-content: center; align-items: center; padding: 20px;
+        }
+        #modal img { max-width: 100%; max-height: 80vh; border-radius: 15px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Panel Admin Bukber</h1>
+        <p id="current-date">Paskab & PPI Dashboard</p>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card full-width border-blue">
+            <i class="fas fa-users"></i>
+            <span>Total Seluruh Peserta</span>
+            <h2 id="t-semua">0</h2>
+        </div>
+
+        <div class="stat-card border-gold">
+            <i class="fas fa-user-shield"></i>
+            <span>PPI</span>
+            <h2 id="t-ppi">0</h2>
+        </div>
+        <div class="stat-card border-gold">
+            <i class="fas fa-user-graduate"></i>
+            <span>CAPASKAB</span>
+            <h2 id="t-capa">0</h2>
+        </div>
+
+        <div class="stat-card border-white">
+            <i class="fas fa-drumstick-bite"></i>
+            <span>MENU AYAM</span>
+            <h2 id="t-ayam">0</h2>
+        </div>
+        <div class="stat-card border-white">
+            <i class="fas fa-egg"></i>
+            <span>MENU TELUR</span>
+            <h2 id="t-telur">0</h2>
+        </div>
+
+        <div class="stat-card full-width border-green">
+            <i class="fas fa-wallet"></i>
+            <span>Total Dana (Rp 30.000 x Jumlah)</span>
+            <h2 id="t-uang" style="color: var(--success);">Rp 0</h2>
+        </div>
+    </div>
+
+    <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" id="inputCari" class="search-input" placeholder="Cari nama atau angkatan..." onkeyup="cariNama(this)">
+    </div>
+
+    <div id="isi-tabel" class="list-container"></div>
+</div>
+
+<div id="modal">
+    <span style="position:absolute; top:30px; right:30px; font-size:2rem; color:#fff;" onclick="closeImg()">&times;</span>
+    <img id="img-target" src="">
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCtQh5SpZCk2TDUk9iMOjQX5uc6gRIJyp8",
+        authDomain: "paskab-c3eb4.firebaseapp.com",
+        databaseURL: "https://paskab-c3eb4-default-rtdb.firebaseio.com",
+        projectId: "paskab-c3eb4",
+        storageBucket: "paskab-c3eb4.firebasestorage.app",
+        messagingSenderId: "630872087747",
+        appId: "1:630872087747:web:dbe8eee722f2d0f6759676"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const dataRef = ref(db, 'pendaftaran');
+
+    let allData = []; 
+
+    onValue(dataRef, (snapshot) => {
+        allData = [];
+        if (snapshot.exists()) {
+            snapshot.forEach((child) => {
+                allData.push({ key: child.key, ...child.val() });
+            });
+            allData.reverse();
+        }
+        renderCards(allData);
+        updateStats(allData);
+    });
+
+    function renderCards(data) {
+        const container = document.getElementById('isi-tabel');
+        container.innerHTML = "";
+        const namaCounts = {};
+        data.forEach(item => {
+            const n = item.nama.toLowerCase().trim();
+            namaCounts[n] = (namaCounts[n] || 0) + 1;
+        });
+
+        if (data.length > 0) {
+            data.forEach((d) => {
+                const isDuplicate = namaCounts[d.nama.toLowerCase().trim()] > 1;
+                const waktuAsli = d.timestamp ? new Date(d.timestamp) : new Date();
+                const tgl = waktuAsli.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+                const jam = waktuAsli.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                let rawWA = d.whatsapp ? d.whatsapp.toString().replace(/\D/g, '') : '';
+                let formattedWA = rawWA.startsWith('0') ? '62' + rawWA.substring(1) : rawWA;
+                const linkWA = `https://wa.me/${formattedWA}?text=Halo ${d.nama}, pembayaran bukber sudah kami terima ya!`;
+
+                const card = `
+                    <div class="user-card ${isDuplicate ? 'duplicate' : ''}">
+                        <div class="card-header">
+                            <div class="user-info">
+                                <h4>${d.nama} ${isDuplicate ? '<span class="duplicate-tag">DUPLIKAT</span>' : ''}</h4>
+                                <small><i class="far fa-clock"></i> ${tgl} • ${jam}</small>
+                            </div>
+                            <div style="text-align:right"><small>Angkatan</small><p style="font-weight:800; color:var(--gold)">${d.angkatan}</p></div>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge ${d.kategori === 'PPI' ? 'badge-ppi' : 'badge-capa'}">${d.kategori}</span>
+                            <span class="badge badge-menu"><i class="fas fa-utensils"></i> ${d.menu}</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-view" onclick="showImg('${d.bukti}')"><i class="fa fa-image"></i></button>
+                            <a href="${linkWA}" target="_blank" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i></a>
+                            <button class="action-btn btn-del" onclick="hapusVerifikasi('${d.key}', '${d.nama}')"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+    }
+
+    function updateStats(data) {
+        let ppi = 0, capa = 0, ayam = 0, telur = 0;
+        data.forEach(d => { 
+            if(d.kategori === "PPI") ppi++; else capa++;
+            if(d.menu === "Ayam") ayam++; else telur++;
+        });
+        document.getElementById('t-semua').innerText = data.length;
+        document.getElementById('t-ppi').innerText = ppi;
+        document.getElementById('t-capa').innerText = capa;
+        document.getElementById('t-ayam').innerText = ayam;
+        document.getElementById('t-telur').innerText = telur;
+        document.getElementById('t-uang').innerText = "Rp " + (data.length * 30000).toLocaleString('id-ID');
+    }
+
+    window.cariNama = function(input) {
+        const keyword = input.value.toLowerCase();
+        renderCards(allData.filter(item => item.nama.toLowerCase().includes(keyword) || item.angkatan.toString().includes(keyword)));
+    };
+
+    window.hapusVerifikasi = function(key, nama) {
+        if (confirm(`Hapus ${nama}?`)) {
+            if (prompt(`Ketik "DELETE":`) === "DELETE") remove(ref(db, 'pendaftaran/' + key));
+        }
+    };
+
+    window.showImg = (src) => {
+        document.getElementById('img-target').src = src;
+        document.getElementById('modal').style.display = 'flex';
+    };
+    window.closeImg = () => { document.getElementById('modal').style.display = 'none'; };
+    document.getElementById('current-date').innerText = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+</script>
+</body>
+</html>
