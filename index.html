@@ -16,16 +16,48 @@
             --danger: #ff4d4d;
             --success: #2ecc71;
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
         body { 
             background: var(--dark-bg);
             background-image: radial-gradient(circle at 50% -20%, #1a2a44 0%, #06090f 100%);
             color: #e2e8f0; 
             padding: 16px;
             min-height: 100vh;
-                        -webkit-tap-highlight-color: transparent;
-            
         }
+
+        /* Loading Overlay */
+        #loader-wrapper {
+            position: fixed;
+            inset: 0;
+            background: var(--dark-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 204, 0, 0.1);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        .loader-text {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: var(--gold);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-hidden { opacity: 0; visibility: hidden; }
+
         .container { max-width: 600px; margin: 0 auto; }
         header { text-align: left; margin: 20px 0 25px 5px; }
         header h1 { font-size: 1.4rem; color: #fff; font-weight: 800; }
@@ -42,62 +74,34 @@
             font-family: monospace;
             font-weight: 700;
             color: var(--gold);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        /* Search Bar */
-        .search-container {
-            margin-bottom: 20px;
-            position: relative;
-        }
+        .search-container { margin-bottom: 20px; position: relative; }
         .search-input {
-            width: 100%;
-            padding: 15px 20px 15px 45px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            color: white;
-            font-size: 0.9rem;
-            outline: none;
-            transition: 0.3s;
+            width: 100%; padding: 15px 20px 15px 45px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 15px; color: white; font-size: 0.9rem; outline: none; transition: 0.3s;
         }
         .search-input:focus { border-color: var(--gold); background: rgba(255,255,255,0.06); }
         .search-icon { position: absolute; left: 18px; top: 18px; color: #8892b0; }
 
         .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 15px;
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px; border-radius: 20px; font-size: 0.7rem;
+            font-weight: 800; text-transform: uppercase; margin-bottom: 15px;
         }
         .status-open { background: rgba(46, 204, 113, 0.15); color: var(--success); border: 1px solid var(--success); }
         .status-closed { background: rgba(255, 77, 77, 0.15); color: var(--danger); border: 1px solid var(--danger); }
         .status-soon { background: rgba(255, 204, 0, 0.15); color: var(--gold); border: 1px solid var(--gold); }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 25px; }
         .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 15px;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 20px; padding: 15px; position: relative; overflow: hidden; backdrop-filter: blur(10px);
         }
-        .stat-card i { position: absolute; right: -5px; bottom: -5px; font-size: 2.5rem; opacity: 0.05; color: white; }
-        .stat-card span { display: block; font-size: 0.65rem; color: #8892b0; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px; }
+        .stat-card span { display: block; font-size: 0.65rem; color: #8892b0; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
         .stat-card h2 { font-size: 1.3rem; font-weight: 800; }
-
         .full-width { grid-column: span 2; }
         .border-blue { border-left: 4px solid var(--accent-blue); }
         .border-green { border-left: 4px solid var(--success); }
@@ -105,15 +109,12 @@
 
         .list-container { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
         .user-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 16px;
-            animation: fadeIn 0.5s ease;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 20px; padding: 16px; animation: fadeIn 0.5s ease;
         }
         .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
         .user-info h4 { font-size: 1rem; font-weight: 700; color: #fff; }
-        .user-info small { font-size: 0.75rem; color: #8892b0; }
+        .user-info small { font-size: 0.72rem; color: #8892b0; display: block; margin-top: 2px; }
 
         .badge { padding: 6px 10px; border-radius: 10px; font-size: 0.65rem; font-weight: 700; }
         .badge-ppi { background: rgba(0, 210, 255, 0.1); color: var(--accent-blue); }
@@ -122,8 +123,9 @@
         .card-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
         .action-btn {
             height: 45px; display: flex; align-items: center; justify-content: center;
-            border-radius: 12px; border: none; font-size: 1.1rem; cursor: pointer;
+            border-radius: 12px; border: none; font-size: 1.1rem; cursor: pointer; transition: 0.2s;
         }
+        .action-btn:active { transform: scale(0.95); }
         .btn-view { background: var(--gold); color: #000; }
         .btn-wa { background: var(--success); color: #fff; text-decoration: none; }
         .btn-del { background: rgba(255, 77, 77, 0.1); color: var(--danger); border: 1px solid rgba(255, 77, 77, 0.2); }
@@ -132,12 +134,17 @@
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
             z-index: 1000; justify-content: center; align-items: center; padding: 20px;
         }
-        #modal img { max-width: 100%; max-height: 80vh; border-radius: 15px; }
+        #modal img { max-width: 100%; max-height: 80vh; border-radius: 15px; border: 2px solid var(--gold); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
+
+<div id="loader-wrapper">
+    <div class="loader-spinner"></div>
+    <div class="loader-text">Sinkronisasi...</div>
+</div>
 
 <div class="container">
     <header>
@@ -151,22 +158,18 @@
 
     <div class="stats-grid">
         <div class="stat-card full-width border-blue">
-            <i class="fas fa-users"></i>
             <span>Total Seluruh Peserta</span>
             <h2 id="t-semua">0</h2>
         </div>
         <div class="stat-card border-white">
-            <i class="fas fa-drumstick-bite"></i>
             <span>MENU AYAM</span>
             <h2 id="t-ayam">0</h2>
         </div>
         <div class="stat-card border-white">
-            <i class="fas fa-egg"></i>
             <span>MENU TELUR</span>
             <h2 id="t-telur">0</h2>
         </div>
         <div class="stat-card full-width border-green">
-            <i class="fas fa-wallet"></i>
             <span>Total Dana Terkumpul</span>
             <h2 id="t-uang" style="color: var(--success);">Rp 0</h2>
         </div>
@@ -205,11 +208,24 @@
 
     let localData = []; 
 
+    // 1. UPDATE CLOCK (HARI, TANGGAL, DETIK)
     function updateClock() {
         const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        document.getElementById('realtime-clock').innerText = now.toLocaleDateString('id-ID', options);
+        const options = { 
+            weekday: 'long', 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric',
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit',
+            hour12: false
+        };
+        
+        const clockStr = now.toLocaleDateString('id-ID', options).replace(/\./g, ':');
+        document.getElementById('realtime-clock').innerText = clockStr;
 
+        // Update Status Badge
         const statusEl = document.getElementById('reg-status');
         const start = new Date('2026-02-09T17:00:00');
         const end = new Date('2026-02-25T23:59:59');
@@ -228,29 +244,40 @@
     setInterval(updateClock, 1000);
     updateClock();
 
+    // 2. AMBIL DATA DARI FIREBASE
     onValue(dataRef, (snapshot) => {
         localData = [];
         if (snapshot.exists()) {
             snapshot.forEach((child) => {
                 localData.push({ key: child.key, ...child.val() });
             });
-            localData.reverse();
+            localData.reverse(); // Data terbaru di atas
         }
         renderCards(localData);
         updateStats(localData);
+        hideLoader(); // Sembunyikan animasi setelah data muncul
+    }, (error) => {
+        console.error(error);
+        hideLoader();
     });
 
+    // 3. RENDER KARTU PESERTA
     function renderCards(data) {
         const container = document.getElementById('isi-tabel');
         container.innerHTML = "";
         
         if(data.length === 0) {
-            container.innerHTML = `<div style="text-align:center; opacity:0.3; margin-top:40px;">Data tidak ditemukan</div>`;
+            container.innerHTML = `<div style="text-align:center; opacity:0.3; margin-top:40px;">Data pendaftar belum ada</div>`;
             return;
         }
 
         data.forEach((d) => {
-            const waktu = d.timestamp ? new Date(d.timestamp).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : '--:--';
+            // Waktu pendaftaran lengkap di setiap card
+            const tglDaftar = d.timestamp ? new Date(d.timestamp).toLocaleDateString('id-ID', {
+                weekday: 'short', day: 'numeric', month: 'short', 
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            }) : '--:--';
+
             let rawWA = d.whatsapp ? d.whatsapp.toString().replace(/\D/g, '') : '';
             let formattedWA = rawWA.startsWith('0') ? '62' + rawWA.substring(1) : rawWA;
 
@@ -258,12 +285,12 @@
                 <div class="user-card">
                     <div class="card-header">
                         <div class="user-info">
-                            <h4>${d.nama}</h4>
-                            <small>${waktu} • Angkatan ${d.angkatan}</small>
+                            <h4>${d.nama || 'No Name'}</h4>
+                            <small>${tglDaftar} • Angkatan ${d.angkatan || '-'}</small>
                         </div>
                         <span class="badge badge-ppi">PPI</span>
                     </div>
-                    <div style="margin-bottom:15px"><span class="badge badge-menu">${d.menu}</span></div>
+                    <div style="margin-bottom:15px"><span class="badge badge-menu">${d.menu || 'Ayam'}</span></div>
                     <div class="card-actions">
                         <button class="action-btn btn-view" onclick="showImg('${d.bukti}')"><i class="fa fa-image"></i></button>
                         <a href="https://wa.me/${formattedWA}" target="_blank" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i></a>
@@ -274,15 +301,7 @@
         });
     }
 
-    document.getElementById('searchBar').addEventListener('input', (e) => {
-        const keyword = e.target.value.toLowerCase();
-        const filtered = localData.filter(item => 
-            item.nama.toLowerCase().includes(keyword) || 
-            item.angkatan.toString().includes(keyword)
-        );
-        renderCards(filtered);
-    });
-
+    // 4. STATISTIK
     function updateStats(data) {
         let ayam = data.filter(d => d.menu === "Ayam").length;
         let telur = data.filter(d => d.menu === "Telur").length;
@@ -292,41 +311,45 @@
         document.getElementById('t-uang').innerText = "Rp " + (data.length * 30000).toLocaleString('id-ID');
     }
 
-    // --- HAPUS DENGAN KETIK "DELETE" & AUTO BACKUP ---
-    window.hapusData = (key, nama) => {
-        const dataLengkap = localData.find(item => item.key === key);
+    // 5. FITUR SEARCH
+    document.getElementById('searchBar').addEventListener('input', (e) => {
+        const keyword = e.target.value.toLowerCase();
+        const filtered = localData.filter(item => 
+            (item.nama && item.nama.toLowerCase().includes(keyword)) || 
+            (item.angkatan && item.angkatan.toString().includes(keyword))
+        );
+        renderCards(filtered);
+    });
 
-        // Konfirmasi 1
-        if (confirm(`Hapus data "${nama}"?`)) {
-            // Konfirmasi 2: Ketik DELETE
-            const konfirmasiKetik = prompt(`Ketik "DELETE" untuk menghapus data ${nama}:`);
-            
-            if (konfirmasiKetik === "DELETE") {
-                // Proses Backup dulu
-                const backupRef = ref(db, 'backup_pendaftaran/' + key);
-                set(backupRef, {
-                    ...dataLengkap,
-                    deletedAt: new Date().toISOString()
-                })
-                .then(() => {
-                    // Berhasil backup, lalu hapus yang asli
-                    return remove(ref(db, 'pendaftaran/' + key));
-                })
-                .then(() => {
-                    alert("Data berhasil dihapus dan dipindahkan ke arsip.");
-                })
-                .catch((err) => alert("Gagal: " + err.message));
-            } else {
-                alert("Penghapusan dibatalkan. Kata konfirmasi tidak sesuai.");
-            }
-        }
+    // 6. FUNGSI GLOBAL (WINDOW)
+    window.hideLoader = () => {
+        const loader = document.getElementById('loader-wrapper');
+        if(loader) loader.classList.add('loader-hidden');
     };
 
     window.showImg = (src) => {
+        if(!src || src === "undefined") { alert("Bukti pembayaran tidak ditemukan"); return; }
         document.getElementById('img-target').src = src;
         document.getElementById('modal').style.display = 'flex';
     };
+
     window.closeImg = () => { document.getElementById('modal').style.display = 'none'; };
+
+    window.hapusData = (key, nama) => {
+        const dataLengkap = localData.find(item => item.key === key);
+        if (confirm(`Hapus data "${nama}"?`)) {
+            const konfirmasiKetik = prompt(`Ketik "DELETE" untuk konfirmasi:`);
+            if (konfirmasiKetik === "DELETE") {
+                const backupRef = ref(db, 'backup_pendaftaran/' + key);
+                set(backupRef, { ...dataLengkap, deletedAt: new Date().toISOString() })
+                .then(() => remove(ref(db, 'pendaftaran/' + key)))
+                .then(() => alert("Data berhasil dihapus & diarsipkan."))
+                .catch((err) => alert("Error: " + err.message));
+            } else {
+                alert("Konfirmasi gagal.");
+            }
+        }
+    };
 </script>
 </body>
 </html>
